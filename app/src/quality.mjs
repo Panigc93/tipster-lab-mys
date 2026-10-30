@@ -14,7 +14,8 @@ export function qualityAudit(tipsters,{now,rules={}}={}){
   else if(t.resetCount>0){flags.push('con_resets');
    if(t.resetCount>=R.manyResets||t.picks/(t.resetCount+1)<R.picksPerResetMin)flags.push('resets_frecuentes');}
   if(t.yield6m===null)flags.push('sin_yield_6m');
-  else if(t.picks6mAvg===null||t.picks6mAvg*6<R.minRecentPicks6m)flags.push('volumen_reciente_estimado_bajo');
+  else if(t.picks6mAvg===null)flags.push('volumen_reciente_desconocido');
+  else if(t.picks6mAvg*6<R.minRecentPicks6m)flags.push('volumen_reciente_estimado_bajo');
   if(t.yield3m!==null&&t.yield3m<0)flags.push('3m_negativo_descriptivo');
   if(t.yield6m!==null&&t.yield6m<0)flags.push('6m_negativo_descriptivo');
   if(t.verifiedPct!==null&&t.verifiedPct<R.lowVerifiedPct)flags.push('verificacion_baja_descriptiva');
