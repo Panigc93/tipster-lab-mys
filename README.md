@@ -88,3 +88,11 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 La fecha debe ser la de captura real, no se deduce de la fecha del archivo. FREE explícito conserva acceso free; ALL queda unknown; PAID/PRIVATE permanecen excluidos. Los números visibles pueden estar redondeados, especialmente alrededor del 11%: revisa la cifra exacta antes de una decisión. No se resta ALL-PAID con números redondeados ni se atribuye gratuidad por ausencia de pestañas. Tablas sin cargar, cabeceras no reconocidas y números ambiguos quedan advertidos o rechazados, nunca convertidos en ceros.
 
 La compatibilidad está probada con 15 casos sintéticos de estructura DOM, NO con un snapshot autenticado real de Blogabet. Categorías sin identificación estructural conservan el texto original; no se inventa una liga recortando nombres. La app 0.3 añade búsqueda y visualización progresiva de muestras para manejar importaciones grandes sin llenar el móvil con miles de tarjetas.
+
+## Versión autónoma 0.4, sin instalación
+
+Abre `web/index.html` desde tu disco en un navegador moderno. No necesita npm, servidor, acceso a cuentas ni Internet. Incluye MYS, importación JSON/CSV, búsqueda,30 muestras cada vez, exportación completa, curva de beneficio y auditoría secundaria. La política de seguridad del propio archivo bloquea conexiones de red. La app hospedada mantiene los análisis adicionales de comisiones y remuestreo.
+
+Para regenerarla tras editar el motor: `node web/build.mjs`. Este paso no instala paquetes ni descarga código. La versión autónoma y la hospedada usan el mismo motor puro. Las etiquetas dicen "según datos aportados": importar una fuente no la certifica.
+
+Prueba opcional de UI real: `node tests/browser.test.mjs` con Chrome instalado (`CHROME_BIN` permite elegir binario). Usa un perfil temporal, fixtures sintéticos y el archivo local; comprueba paginación30/60/65, búsqueda, descarga Blob completa aunque se filtre, reimportación, plantilla, auditoría, importación inválida, vacío al recargar y anchuras320/390/1280. Las capturas son evidencia local, no datos reales de Blogabet.
