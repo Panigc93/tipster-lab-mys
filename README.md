@@ -122,3 +122,11 @@ Para varios perfiles ya guardados, `importers/batch_snapshots.py` recibe un mani
 Las fuentes enlazadas se restringen a perfiles HTTPS de Blogabet. Se eliminan query strings y fragmentos para no incluir tokens accidentales en exportaciones. Un enlace dentro de un import no confirma autoría. Los importadores/CLI rechazan reemplazar una salida existente: usa un nombre nuevo para conservar evidencia. Nunca subas snapshots autenticados a GitHub.
 
 Las pruebas generativas deterministas contrastan200 historiales contra una implementación aritmética independiente de beneficio/stake/drawdown,100 historiales de escenarios y muestreos MYS por tipster/categoría/acceso. Verifican invariantes, no capacidad de predecir apuestas.
+
+## Función0.6: comparar dos capturas
+
+La app autónoma `web/index.html` permite importar el snapshot actual y después el anterior, ver altas/ausentes/cambios, deltas de picks y yield, transición MYS y avisos de posible reset o fecha ausente. No consulta sitios ni guarda archivos después de recargar. El informe completo conserva todas las muestras aunque la pantalla muestre solo30 diferencias. Cambiar el dataset limpia la comparación para no presentar una comparación antigua junto a otro historial.
+
+También funciona sin interfaz: `node compare.mjs anterior.json actual.json --out comparacion.json`. Requiere muestras MYS, sin duplicados por tipster/ámbito/acceso, y rechaza capturas actuales anteriores a las previas cuando ambas tienen fecha. Un cambio FREE→PRIVATE aparece como una retirada y un alta, sin mezclar muestras. Ausencia del archivo no significa desaparición real. Caída de picks no prueba un reset. Diferencia de yield son puntos porcentuales, no el yield del periodo entre capturas: sin stakes/profits exactos no se reconstruye rendimiento incremental.
+
+Esta función está en la app autónoma y CLI. La página hospedada conserva0.5, sin afirmar una función que aún no contiene.
