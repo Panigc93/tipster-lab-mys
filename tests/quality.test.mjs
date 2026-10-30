@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {parseInput} from '../app/src/engine.mjs';import {qualityAudit,qualitySummary} from '../app/src/quality.mjs';
+const NOW='2026-10-30T14:20:00Z';
+const run=rows=>qualityAudit(parseInput(JSON.stringify(rows)).tipsters,{now:NOW});
+test('clean aggregate still carries followability caveat',()=>{const [r]=run([{slug:'a',picks:300,yield:15,yield6m:12,yield3m:5,picks_6m_avg:20,reset_count:0,last_pick_at:'2026-10-30T09:00:00Z',verified_pct:100,stats_updated_at:'2026-10-30T12:00:00Z'}]);assert.deepEqual(r.flags,['seguibilidad_no_comprobada']);});
+test('detects resets, stale, tiny recent sample, negative windows',()=>{const [r]=run([{slug:'b',picks:364,yield:177,yield3m:-100,yield6m:-100,picks_6m_avg:2,reset_count:30,last_pick_at:'2026-05-01T00:00:00Z',verified_pct:20}]);
+ for(const f of['inactivo','con_resets','resets_frecuentes','muestra_reciente_insuficiente','3m_negativo','6m_negativo','verificacion_baja'])assert.ok(r.flags.includes(f),f);});
+test('missing data stays unknown, not zero',()=>{const [r]=run([{slug:'c',picks:100,yield:11}]);for(const f of['sin_ultimo_pick','resets_desconocidos','sin_yield_6m'])assert.ok(r.flags.includes(f));assert.ok(!r.flags.includes('con_resets'));});
+test('deterministic, requires now, summary counts',()=>{assert.throws(()=>qualityAudit([],{}));const rows=[{slug:'d',picks:100,yield:11},{slug:'e',picks:100,yield:11}];assert.deepEqual(qualitySummary(run(rows)).flags.seguibilidad_no_comprobada,2);assert.deepEqual(run(rows),run(rows));});
+test('accepts Postgres timestamptz text with explicit +00 offset only',()=>{const [r]=run([{slug:'p',picks:100,yield:11,last_pick_at:'2026-10-30 09:38:49.979+00',stats_updated_at:'2026-10-30 12:15:01+00'}]);assert.equal(r.lastPickAgeDays,0);assert.throws(()=>run([{slug:'q',picks:100,yield:11,last_pick_at:'2026-10-30 09:38:49'}]));});
