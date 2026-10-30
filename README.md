@@ -65,7 +65,7 @@ node cli.mjs archivo.json
 node cli.mjs archivo.csv --out informe.json
 ```
 
-No se incluye ninguna cookie, token, .env ni conexión de producción. No se modificó ningún repo existente. Se creó el repo público tipster-lab-mys, pero el push fue denegado con HTTP 403 y sigue vacío. El ZIP contiene el código completo.
+No se incluye ninguna cookie, token, .env ni conexión de producción. No se modificó ningún repo existente. Código publicado en https://github.com/Panigc93/tipster-lab-mys. Página pública: https://files.instinct.com/iqr7qzwv2s4p-tipster-lab. Un primer push fue rechazado; un token de reemplazo permitió la publicación.
 
 ## Origen del diseño
 
