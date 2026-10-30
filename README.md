@@ -74,3 +74,17 @@ Código existente inspeccionado: https://github.com/Panigc93/tipster-analyzer y 
 ## Pendiente real
 
 La lectura autenticada puntual devolvió HTTP 403. Se detuvo sin reintentos ni rutas alternativas. No hay resultados MYS reales validados ni promesa de que la cookie esté vigente. El dataset existente de 8.445 nombres/slugs no contiene picks ni yields, por lo que no se presenta como evidencia MYS.
+
+## Hito 0.3: snapshots HTML, sin conexión
+
+El importador estándar Python convierte tablas Statistics ya guardadas en HTML en muestras MYS con fecha y fuente. No abre páginas, no usa cookies ni ejecuta scripts del HTML.
+
+```sh
+python3 importers/stats_html.py stats-guardadas.html --tipster nombre --as-of 2026-10-30T12:00:00Z --source-url https://nombre.blogabet.com/ --out mys.json
+node cli.mjs mys.json --out informe.json
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
+La fecha debe ser la de captura real, no se deduce de la fecha del archivo. FREE explícito conserva acceso free; ALL queda unknown; PAID/PRIVATE permanecen excluidos. Los números visibles pueden estar redondeados, especialmente alrededor del 11%: revisa la cifra exacta antes de una decisión. No se resta ALL-PAID con números redondeados ni se atribuye gratuidad por ausencia de pestañas. Tablas sin cargar, cabeceras no reconocidas y números ambiguos quedan advertidos o rechazados, nunca convertidos en ceros.
+
+La compatibilidad está probada con 15 casos sintéticos de estructura DOM, NO con un snapshot autenticado real de Blogabet. Categorías sin identificación estructural conservan el texto original; no se inventa una liga recortando nombres. La app 0.3 añade búsqueda y visualización progresiva de muestras para manejar importaciones grandes sin llenar el móvil con miles de tarjetas.
