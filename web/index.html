@@ -1,11 +1,11 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'"><title>Tipster Lab · MYS local</title><style>
 body{margin:0;color:#251f21;background:#f4efec;font:16px/1.6 system-ui,sans-serif}main{max-width:960px;margin:auto;background:#fff;min-height:100vh;padding:24px;box-sizing:border-box}h1{font:36px/1.2 Georgia,serif}h2{font:25px Georgia,serif}h3{font-size:18px}p{overflow-wrap:anywhere}.note{padding:16px;background:#f4efec;border-radius:8px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}section{margin:32px 0}.card{border:1px solid #ddd;border-radius:8px;padding:16px;overflow-wrap:anywhere}.card h3{margin-top:0}.buttons{display:flex;gap:10px;flex-wrap:wrap}button,input,select,textarea{font:inherit;box-sizing:border-box;max-width:100%;color:inherit}button,select{min-height:44px;padding:8px 12px;background:#fff;border:1px solid #bbb;border-radius:4px;cursor:pointer}input,textarea{padding:10px;border:1px solid #ccc;border-radius:4px;width:100%}textarea{min-height:150px}label{display:block;margin:14px 0}summary{cursor:pointer;min-height:44px;font-weight:600}dt{color:#585254}dd{margin:0 0 12px;font-weight:600}.pass{color:#397d6b}#error{color:#be2633}small,.muted{color:#585254}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #73a89a;outline-offset:2px}.chart{width:100%;max-height:220px;border:1px solid #eee;margin:12px 0}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:8px;border-bottom:1px solid #ddd}@media(max-width:400px){main{padding:18px}}
-</style></head><body><main><header><h1>Tipster Lab · MYS</h1><p>Tu filtro: ≥100 picks y ≥11 % yield en la misma muestra general, categoría o liga. Gratis y público.</p><p class="note">Herramienta local, sin red ni cookies. No envía registros, no apuesta y no guarda nada al recargar. Los resultados se calculan según los datos que aportes: no certifican las fuentes ni el acceso actual.</p></header><section><h2>1. Importar datos</h2><label>Archivo JSON o CSV<input id="file" type="file" accept=".json,.csv"></label><details><summary>Pegar datos o ver formato</summary><p>MYS: {"scopes":[{"tipster":"nombre","scope":"liga","picks":100,"yield":11,"access":"free"}]}. Access: free, paid, private, unknown. También admite picks individuales y agregados clone-filter. Consulta README para formatos y límites.</p><textarea id="text" aria-label="JSON o CSV"></textarea><button id="load">Analizar datos pegados</button></details><div class="buttons"><button id="example">Cargar demo sintética opcional</button><button id="template">Descargar plantilla</button><button id="clear">Vaciar datos</button></div><p id="error" role="alert"></p><p id="status" role="status">Sin datos reales cargados.</p></section><section><h2>2. MYS según los datos aportados</h2><p>No se mezclan ALL/FREE, muestras generales/ligas ni accesos desconocidos. Pago y privado no cumplen. El dato ausente queda pendiente.</p><label>Mostrar<select id="filter"><option value="all">Todos</option><option value="pass">Cumple según datos</option><option value="unknown">Pendiente</option><option value="fail">No cumple</option></select></label><label>Buscar tipster o liga<input id="query" type="search"></label><p id="count"></p><div id="results" class="grid"></div><button id="more" hidden>Mostrar 30 más</button><p><button id="export">Exportar informe completo JSON</button></p></section><section id="audit"></section><section><h2>3. Cómo se interpreta</h2><p>MYS es un filtro de historial, no una garantía de beneficio. La procedencia indicada en un import no se valida automáticamente. El acceso gratuito y público puede cambiar; compruébalo con fecha. Un yield redondeado cerca de11 % necesita revisar la cifra exacta.</p><p>El drawdown usa cierres diarios UTC y puede ocultar pérdidas intradía. El yield usa stake, no número de picks. La sensibilidad a cuotas es una simulación simplificada, no incluye límites, latencia, suscripciones ni comisiones netas por mercado. Los periodos históricos no son una prueba prospectiva.</p><small>Versión0.4 · Archivo autónomo. Abre este HTML en un navegador moderno. Motor y pruebas sin dependencias. No contiene datos reales por defecto.</small></section></main><script>
+</style></head><body><main><header><h1>Tipster Lab · MYS</h1><p>Tu filtro: ≥100 picks y ≥11 % yield en la misma muestra general, categoría o liga. Gratis y público.</p><p class="note">Herramienta local, sin red ni cookies. No envía registros, no apuesta y no guarda nada al recargar. Los resultados se calculan según los datos que aportes: no certifican las fuentes ni el acceso actual.</p></header><section><h2>1. Importar datos</h2><label>Archivo JSON o CSV<input id="file" type="file" accept=".json,.csv"></label><details><summary>Pegar datos o ver formato</summary><p>MYS: {"scopes":[{"tipster":"nombre","scope":"liga","picks":100,"yield":11,"access":"free"}]}. Access: free, paid, private, unknown. También admite picks individuales y agregados clone-filter. Consulta README para formatos y límites.</p><textarea id="text" aria-label="JSON o CSV"></textarea><button id="load">Analizar datos pegados</button></details><div class="buttons"><button id="example">Cargar demo sintética opcional</button><button id="template">Descargar plantilla</button><button id="clear">Vaciar datos</button></div><p id="error" role="alert"></p><p id="status" role="status">Sin datos reales cargados.</p></section><section><h2>2. MYS según los datos aportados</h2><p>No se mezclan ALL/FREE, muestras generales/ligas ni accesos desconocidos. Pago y privado no cumplen. El dato ausente queda pendiente.</p><label>Mostrar<select id="filter"><option value="all">Todos</option><option value="pass">Cumple según datos</option><option value="unknown">Pendiente</option><option value="fail">No cumple</option></select></label><label>Buscar tipster o liga<input id="query" type="search"></label><p id="count"></p><div id="results" class="grid"></div><button id="more" hidden>Mostrar 30 más</button><p><button id="export">Exportar informe completo JSON</button></p></section><section id="audit"></section><section><h2>3. Cómo se interpreta</h2><p>MYS es un filtro de historial, no una garantía de beneficio. La procedencia indicada en un import no se valida automáticamente. El acceso gratuito y público puede cambiar; compruébalo con fecha. Un yield redondeado cerca de11 % necesita revisar la cifra exacta.</p><p>El drawdown usa cierres diarios UTC y puede ocultar pérdidas intradía. El yield usa stake, no número de picks. La sensibilidad a cuotas es una simulación simplificada, no incluye límites, latencia, suscripciones ni comisiones netas por mercado. Los periodos históricos no son una prueba prospectiva.</p><small>Versión0.5 · Archivo autónomo. Abre este HTML en un navegador moderno. Motor y pruebas sin dependencias. No contiene datos reales por defecto.</small></section></main><script>
 /*ENGINE_START*/
 // Tipster Lab: pure, network-free analysis. All returns are historical descriptions.
-const VERSION = '0.4.0';
+const VERSION = '0.5.0';
 const sum = xs => xs.reduce((a,b)=>a+b,0);
-const num = x => x === null || x === undefined || String(x).trim()==='' ? NaN : Number(x);
+const num = x => (typeof x!=='number'&&typeof x!=='string')||String(x).trim()==='' ? NaN : Number(x);
 function parseCSV(text) {
   const rows=[]; let row=[], cell='', quoted=false;
   text=text.replace(/^\uFEFF/,'');
@@ -30,11 +30,13 @@ function parseInput(text) {
   if(!Array.isArray(rows)||!rows.length)throw Error('Se espera un array JSON, {picks: []}, {tipsters: []} o CSV');
   if(rows.length>50000)throw Error('Límite: 50.000 registros');
   if(rows.some(x=>!x||typeof x!=='object'||Array.isArray(x)))throw Error('Cada registro debe ser un objeto');
-  if(rows.some(x=>'scope'in x||'access'in x))return {mode:'mys',scopes:normalizeMYS(rows),total:rows.length};
-  return rows.some(x=>'stake'in x||'result'in x||'settledAt'in x)?normalizePicks(rows):normalizeRadar(rows);
+  const warnings=Array.isArray(raw.warnings)?raw.warnings.filter(x=>typeof x==='string').slice(0,1000):[];
+  const data=rows.some(x=>'scope'in x||'access'in x)?{mode:'mys',scopes:normalizeMYS(rows),total:rows.length}:rows.some(x=>'stake'in x||'result'in x||'settledAt'in x)?normalizePicks(rows):normalizeRadar(rows);
+  return {...data,warnings};
 }
 function validDate(s){
   if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$/.test(s))return null;
+  if(s.includes('T')&&(Number(s.slice(11,13))>23||Number(s.slice(14,16))>59||Number(s.slice(17,19))>59))return null;
   const d=new Date(s); if(!Number.isFinite(+d))return null;
   // Check calendar day before Date can silently roll February 30 into March.
   const day=s.slice(0,10);const utc=new Date(day+'T00:00:00Z');
@@ -66,10 +68,12 @@ function normalizePicks(rows){
   const profit=hasProfit?supplied:computed;
   if(profit < -stake-0.02){issues.push(`${at}: pérdida mayor que stake (formato no soportado)`);return;}
   if(result==='void'&&Math.abs(profit)>0.02){issues.push(`${at}: void con profit distinto de cero`);return;}
-  picks.push({id,tipster,settledAt,day:settledAt.slice(0,10),stake,odds:Number.isFinite(odds)?odds:null,result:result||null,profit,eventId:r.eventId?String(r.eventId).trim():null,category:String(r.category??'Sin categoría'),visibility:String(r.visibility??'unknown')});
+  const visibility=String(r.visibility??'unknown');if(!['free','paid','private','unknown'].includes(visibility)){issues.push(`${at}: visibility no reconocido`);return;}
+  picks.push({id,tipster,settledAt,day:settledAt.slice(0,10),stake,odds:Number.isFinite(odds)?odds:null,result:result||null,profit,eventId:r.eventId?String(r.eventId).trim():null,category:String(r.category??'Sin categoría'),visibility});
  });
  if(issues.length)throw Error(`${issues.length} registro(s) inválidos. Importación cancelada. ${issues.slice(0,6).join(' · ')}`);
  if(!picks.length)throw Error('No hay picks liquidados válidos');
+ summarize(picks); // Reject aggregate numeric overflow before UI state changes.
  picks.sort((a,b)=>a.settledAt.localeCompare(b.settledAt)||a.tipster.localeCompare(b.tipster)||a.id.localeCompare(b.id));
  return {mode:'picks',picks,pending,total:rows.length};
 }
@@ -86,6 +90,7 @@ function normalizeRadar(rows){
 }
 function summarize(picks){
  const turnover=sum(picks.map(p=>p.stake)),profit=sum(picks.map(p=>p.profit));
+ if(!Number.isFinite(turnover)||!Number.isFinite(profit))throw Error('Magnitudes fuera del rango numérico soportado');
  const daily=new Map();for(const p of picks)daily.set(p.day,(daily.get(p.day)||0)+p.profit);
  let equity=0,peak=0,maxDrawdown=0;const curve=[{x:0,label:'Inicio',value:0}];
  [...daily].sort(([a],[b])=>a.localeCompare(b)).forEach(([day,p],i)=>{equity+=p;peak=Math.max(peak,equity);maxDrawdown=Math.max(maxDrawdown,peak-equity);curve.push({x:i+1,label:day,value:equity});});
@@ -99,9 +104,11 @@ function stress(picks,slippage=0,commission=0){
  if(picks.some(p=>!p.result))return null;
  return summarize(picks.map(p=>{
  let profit=p.profit;
- if(p.result==='win'||p.result==='half_win'){
+ if((p.result==='win'||p.result==='half_win')&&slippage>0){
   // Slippage is a relative reduction in the decimal odds, floored at 1.00.
-  profit=p.stake*(Math.max(1,p.odds*(1-slippage/100))-1)*(p.result==='half_win'?0.5:1);
+  const factor=p.result==='half_win'?0.5:1;
+  // Keep imported net-profit adjustments; subtract only the modeled odds loss.
+  profit=p.profit-p.stake*(p.odds-Math.max(1,p.odds*(1-slippage/100)))*factor;
  }
  if(profit>0)profit*=1-commission/100;
  return {...p,profit};
@@ -139,7 +146,11 @@ function evaluateMYS(scope){
  const y=Number.isFinite(scope.yield)?scope.yield:null;
  const access=['free','paid','private','unknown'].includes(scope.access)?scope.access:'unknown';
  const m=sample===null?'unknown':sample>=100?'pass':'fail';
- const yy=y===null?'unknown':y>=11?'pass':'fail';
+ const rounded=scope.yieldIsRounded===true;
+ const decimals=Number.isInteger(scope.yieldDecimals)&&scope.yieldDecimals>=0&&scope.yieldDecimals<=8?scope.yieldDecimals:null;
+ const margin=rounded&&decimals!==null?0.5*10**(-decimals):null;
+ // A rounded display touching the threshold cannot establish the exact criterion.
+ const yy=y===null?'unknown':rounded&&(decimals===null||(y-(margin??0)<11&&y+(margin??0)>=11))?'unknown':y>=11?'pass':'fail';
  const s=access==='free'?'pass':access==='unknown'?'unknown':'fail';
  const states=[m,yy,s];const verdict=states.includes('fail')?'fail':states.includes('unknown')?'unknown':'pass';
  return {...scope,picks:sample,yield:y,access,m,y:yy,s,verdict};
@@ -164,7 +175,7 @@ function normalizeMYS(rows){
   if(yieldPct!==null&&!Number.isFinite(yieldPct))throw Error(`Fila ${i+1}: yield no válido`);
   if(r.asOf&&!validDate(r.asOf))throw Error(`Fila ${i+1}: asOf debe ser fecha ISO`);
   if(r.access!==undefined&&!['free','paid','private','unknown'].includes(r.access))throw Error(`Fila ${i+1}: access no reconocido`);
-  return evaluateMYS({tipster,scope,picks,yield:yieldPct,access:r.access??'unknown',source:String(r.source??'Importación manual'),asOf:r.asOf?validDate(r.asOf):null,url:typeof r.url==='string'&&/^https:\/\/[^/]+\.blogabet\.com\//.test(r.url)?r.url:null});
+  return evaluateMYS({tipster,scope,picks,yield:yieldPct,access:r.access??'unknown',source:String(r.source??'Importación manual'),yieldIsRounded:r.yieldIsRounded===true,yieldDecimals:Number.isInteger(r.yieldDecimals)&&r.yieldDecimals>=0&&r.yieldDecimals<=8?r.yieldDecimals:null,asOf:r.asOf?validDate(r.asOf):null,url:typeof r.url==='string'&&/^https:\/\/[^/]+\.blogabet\.com\//.test(r.url)?r.url:null});
  });
 }
 
@@ -175,7 +186,8 @@ const node=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefi
 function save(name,data){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 function render(){
  const root=$('results');root.replaceChildren();const query=$('query').value.toLowerCase();const shown=scopes.filter(x=>($('filter').value==='all'||x.verdict===$('filter').value)&&`${x.tipster} ${x.scope}`.toLowerCase().includes(query));$('count').textContent=`${shown.length} muestras; ${Math.min(limit,shown.length)} visibles. Exportar conserva todas las muestras.`;$('more').hidden=shown.length<=limit;
- for(const r of shown.slice(0,limit)){const c=node('article',undefined,'card');c.append(node('h3',r.tipster),node('p',r.scope),node('strong',r.verdict==='pass'?'Cumple MYS según datos aportados':r.verdict==='fail'?'No cumple MYS según datos aportados':'MYS pendiente',r.verdict==='pass'?'pass':''));const dl=node('dl');for(const [k,v] of [['M · Picks',r.picks===null?'Sin dato':String(r.picks)],['Y · Yield',f(r.yield)+(r.yield===null?'':' %')],['S · Acceso',({free:'Gratis y público, según import',paid:'Pago',private:'Privado',unknown:'Sin verificar'})[r.access]]]){dl.append(node('dt',k),node('dd',v));}c.append(dl,node('small',(r.source||'Importado, sin certificar')+(r.asOf?' · '+r.asOf.slice(0,10):' · Sin fecha')));root.append(c);}
+ for(const r of shown.slice(0,limit)){const c=node('article',undefined,'card');c.append(node('h3',r.tipster),node('p',r.scope),node('strong',r.verdict==='pass'?'Cumple MYS según datos aportados':r.verdict==='fail'?'No cumple MYS según datos aportados':'MYS pendiente',r.verdict==='pass'?'pass':''));const dl=node('dl');for(const [k,v] of [['M · Picks',r.picks===null?'Sin dato':String(r.picks)],['Y · Yield',f(r.yield)+(r.yield===null?'':' %')],['S · Acceso',({free:'Gratis y público, según import',paid:'Pago',private:'Privado',unknown:'Sin verificar'})[r.access]]]){dl.append(node('dt',k),node('dd',v));}if(r.yieldIsRounded)c.append(node('p',r.y==='unknown'?'Yield redondeado: falta precisión para confirmar ≥11 %.':'Yield mostrado redondeado.'));c.append(dl,node('small',(r.source||'Importado, sin certificar')+(r.asOf?' · '+r.asOf.slice(0,10):' · Sin fecha')));root.append(c);}
+ if(current?.warnings?.length){const box=node('div',undefined,'note');box.append(node('strong',`${current.warnings.length} advertencias del importador`));current.warnings.slice(0,20).forEach(w=>box.append(node('p',w)));root.prepend(box);}
  if(!shown.length)root.append(node('p','No hay muestras en esta vista. No se han inventado candidatos.'));
  const audit=$('audit');audit.replaceChildren();if(current?.mode==='picks'){
  const s=summarize(current.picks);audit.append(node('h2','Auditoría complementaria'),node('p',`${s.n} picks · ${f(s.profit)} u beneficio · ${f(s.yield)} % yield · ${f(s.maxDrawdown)} u drawdown diario`));
@@ -184,6 +196,6 @@ function render(){
  const label=node('label','Caída relativa de cuota decimal,0-15 %');const range=node('input');range.type='range';range.min='0';range.max='15';range.value='3';range.setAttribute('aria-label','Reducción relativa de cuota');label.append(range);const output=node('p');const calc=()=>{const st=stress(current.picks,Number(range.value),0);output.textContent=st?`Cuota -${range.value} %: yield ${f(st.yield)} %, beneficio ${f(st.profit)} u, drawdown diario ${f(st.maxDrawdown)} u.`:'No se puede simular cuota con profit solo, sin resultados normalizados.';};range.oninput=calc;calc();audit.append(label,output);
  }
 }
-function load(text,name){try{const next=parseInput(text);const nextScopes=next.mode==='mys'?next.scopes:next.mode==='picks'?mysFromPicks(next.picks):next.tipsters.map(t=>evaluateMYS({tipster:t.name,scope:'General',picks:t.picks,yield:t.yield,access:'unknown',source:'Agregado clone-filter'}));current=next;scopes=nextScopes;report={version:'0.4.0',source:name,criteria:{minPicks:100,minYieldPct:11,access:'free'},scopes};if(current.mode==='picks')Object.assign(report,{audit:summarize(current.picks),split:temporalSplit(current.picks),overlap:overlaps(current.picks)});limit=30;$('filter').value='all';$('query').value='';$('error').textContent='';$('status').textContent=`${name}: ${current.total} registros importados. Datos aportados, no certificados.`;render();}catch(e){$('error').textContent='No se ha importado: '+e.message;}}
+function load(text,name){try{const next=parseInput(text);const nextScopes=next.mode==='mys'?next.scopes:next.mode==='picks'?mysFromPicks(next.picks):next.tipsters.map(t=>evaluateMYS({tipster:t.name,scope:'General',picks:t.picks,yield:t.yield,access:'unknown',source:'Agregado clone-filter'}));current=next;scopes=nextScopes;report={version:'0.5.0',source:name,criteria:{minPicks:100,minYieldPct:11,access:'free'},warnings:next.warnings??[],scopes};if(current.mode==='picks')Object.assign(report,{audit:summarize(current.picks),split:temporalSplit(current.picks),overlap:overlaps(current.picks)});limit=30;$('filter').value='all';$('query').value='';$('error').textContent='';$('status').textContent=`${name}: ${current.total} registros importados. Datos aportados, no certificados. ${next.warnings?.length||0} advertencias.`;render();}catch(e){$('error').textContent='No se ha importado: '+e.message;}}
 $('load').onclick=()=>load($('text').value,'Datos pegados');$('file').onchange=async e=>{const file=e.target.files[0];if(file){if(file.size>10000000){$('error').textContent='Límite10 MB';return;}load(await file.text(),file.name);}e.target.value='';};$('filter').onchange=()=>{limit=30;render();};$('query').oninput=()=>{limit=30;render();};$('more').onclick=()=>{limit+=30;render();};$('clear').onclick=()=>{current=null;scopes=[];report={};$('text').value='';$('status').textContent='Datos vaciados.';$('error').textContent='';render();};$('export').onclick=()=>save('tipster-lab-mys.json',report);$('example').onclick=()=>load(JSON.stringify(demoPicks()),'DEMO SINTÉTICA: nombres y resultados ficticios');$('template').onclick=()=>save('plantilla-mys.json',{scopes:[{tipster:'nombre',scope:'liga',picks:null,yield:null,access:'unknown',source:'Completar con evidencia',asOf:null}]});render();
 </script></body></html>

@@ -1,154 +1,196 @@
 TAP version 13
-# Subtest: yield uses stake, not count
-ok 1 - yield uses stake, not count
+# Subtest: CLI report export is complete and reimportable with provenance and precision
+ok 1 - CLI report export is complete and reimportable with provenance and precision
   ---
-  duration_ms: 5.546613
+  duration_ms: 23.544714
+  type: 'test'
+  ...
+# Subtest: CLI invalid input fails without creating output
+ok 2 - CLI invalid input fails without creating output
+  ---
+  duration_ms: 16.485238
+  type: 'test'
+  ...
+# Subtest: yield uses stake, not count
+ok 3 - yield uses stake, not count
+  ---
+  duration_ms: 5.758934
   type: 'test'
   ...
 # Subtest: drawdown includes initial loss and partial recoveries
-ok 2 - drawdown includes initial loss and partial recoveries
+ok 4 - drawdown includes initial loss and partial recoveries
   ---
-  duration_ms: 0.256861
+  duration_ms: 0.242491
   type: 'test'
   ...
 # Subtest: same-day settlement is batched, no invented intraday path
-ok 3 - same-day settlement is batched, no invented intraday path
+ok 5 - same-day settlement is batched, no invented intraday path
   ---
-  duration_ms: 0.11005
+  duration_ms: 0.25162
   type: 'test'
   ...
 # Subtest: void, half win and half loss
-ok 4 - void, half win and half loss
+ok 6 - void, half win and half loss
   ---
-  duration_ms: 0.240171
+  duration_ms: 0.258291
   type: 'test'
   ...
 # Subtest: pending excluded
-ok 5 - pending excluded
+ok 7 - pending excluded
   ---
-  duration_ms: 0.12055
+  duration_ms: 0.12304
   type: 'test'
   ...
 # Subtest: duplicate id is scoped to tipster
-ok 6 - duplicate id is scoped to tipster
+ok 8 - duplicate id is scoped to tipster
   ---
-  duration_ms: 0.193401
+  duration_ms: 0.204571
   type: 'test'
   ...
 # Subtest: invalid records fail atomically
-ok 7 - invalid records fail atomically
+ok 9 - invalid records fail atomically
   ---
-  duration_ms: 0.22634
+  duration_ms: 0.20899
   type: 'test'
   ...
 # Subtest: profit only is accepted, stress unavailable
-ok 8 - profit only is accepted, stress unavailable
+ok 10 - profit only is accepted, stress unavailable
   ---
-  duration_ms: 0.203401
+  duration_ms: 0.167931
   type: 'test'
   ...
 # Subtest: slippage and commission, losses unchanged
-ok 9 - slippage and commission, losses unchanged
+ok 11 - slippage and commission, losses unchanged
   ---
-  duration_ms: 0.30046
+  duration_ms: 0.26419
   type: 'test'
   ...
 # Subtest: half win stress and zero scenario identity
-ok 10 - half win stress and zero scenario identity
+ok 12 - half win stress and zero scenario identity
   ---
-  duration_ms: 0.30252
+  duration_ms: 0.26821
   type: 'test'
   ...
 # Subtest: CSV quoted comma, newline, escaped quote, CRLF, BOM
-ok 11 - CSV quoted comma, newline, escaped quote, CRLF, BOM
+ok 13 - CSV quoted comma, newline, escaped quote, CRLF, BOM
   ---
-  duration_ms: 0.654832
+  duration_ms: 1.411014
   type: 'test'
   ...
 # Subtest: JSON envelopes and CSV entry
-ok 12 - JSON envelopes and CSV entry
+ok 14 - JSON envelopes and CSV entry
   ---
-  duration_ms: 0.268251
+  duration_ms: 0.30572
   type: 'test'
   ...
 # Subtest: radar preserves missing versus zero and snake_case
-ok 13 - radar preserves missing versus zero and snake_case
+ok 15 - radar preserves missing versus zero and snake_case
   ---
-  duration_ms: 0.2265
+  duration_ms: 0.214591
   type: 'test'
   ...
 # Subtest: split holds whole UTC dates together
-ok 14 - split holds whole UTC dates together
+ok 16 - split holds whole UTC dates together
   ---
-  duration_ms: 1.005383
+  duration_ms: 0.23358
   type: 'test'
   ...
 # Subtest: bootstrap is deterministic and constant return stays constant
-ok 15 - bootstrap is deterministic and constant return stays constant
+ok 17 - bootstrap is deterministic and constant return stays constant
   ---
-  duration_ms: 2.835436
+  duration_ms: 3.230498
   type: 'test'
   ...
 # Subtest: overlap is exact event id not correlation
-ok 16 - overlap is exact event id not correlation
+ok 18 - overlap is exact event id not correlation
   ---
-  duration_ms: 0.197101
+  duration_ms: 0.24229
   type: 'test'
   ...
 # Subtest: demo valid and three distinct streams
-ok 17 - demo valid and three distinct streams
+ok 19 - demo valid and three distinct streams
   ---
-  duration_ms: 2.907326
+  duration_ms: 3.542878
   type: 'test'
   ...
 # Subtest: MYS inclusive thresholds exactly 100 and 11
-ok 18 - MYS inclusive thresholds exactly 100 and 11
+ok 20 - MYS inclusive thresholds exactly 100 and 11
   ---
-  duration_ms: 0.094871
+  duration_ms: 0.1159
   type: 'test'
   ...
 # Subtest: MYS independently fails sample yield paid private
-ok 19 - MYS independently fails sample yield paid private
+ok 21 - MYS independently fails sample yield paid private
   ---
-  duration_ms: 0.07078
+  duration_ms: 0.0717
   type: 'test'
   ...
 # Subtest: unknown access is not pass, missing yield is unknown
-ok 20 - unknown access is not pass, missing yield is unknown
+ok 22 - unknown access is not pass, missing yield is unknown
   ---
-  duration_ms: 0.03753
+  duration_ms: 0.03716
   type: 'test'
   ...
 # Subtest: MYS never borrows category or FREE sample
-ok 21 - MYS never borrows category or FREE sample
+ok 23 - MYS never borrows category or FREE sample
   ---
-  duration_ms: 0.741512
+  duration_ms: 0.946473
   type: 'test'
   ...
 # Subtest: MYS JSON import and malformed access
-ok 22 - MYS JSON import and malformed access
+ok 24 - MYS JSON import and malformed access
   ---
-  duration_ms: 0.18575
+  duration_ms: 0.21695
   type: 'test'
   ...
 # Subtest: category named General is not counted twice
-ok 23 - category named General is not counted twice
+ok 25 - category named General is not counted twice
   ---
-  duration_ms: 0.07752
+  duration_ms: 0.13797
   type: 'test'
   ...
 # Subtest: MYS rejects invalid provenance dates
-ok 24 - MYS rejects invalid provenance dates
+ok 26 - MYS rejects invalid provenance dates
   ---
-  duration_ms: 0.052701
+  duration_ms: 0.06757
   type: 'test'
   ...
-1..24
-# tests 24
+# Subtest: rounded displayed yield touching11 stays pending, not source-certified
+ok 27 - rounded displayed yield touching11 stays pending, not source-certified
+  ---
+  duration_ms: 0.122491
+  type: 'test'
+  ...
+# Subtest: booleans and arrays are not numeric inputs; invalid visibility/time fails atomically
+ok 28 - booleans and arrays are not numeric inputs; invalid visibility/time fails atomically
+  ---
+  duration_ms: 0.13669
+  type: 'test'
+  ...
+# Subtest: zero stress preserves supplied net profit and scenarios subtract modeled odds loss
+ok 29 - zero stress preserves supplied net profit and scenarios subtract modeled odds loss
+  ---
+  duration_ms: 0.09052
+  type: 'test'
+  ...
+# Subtest: overflowed magnitude is rejected, not serialized as fake null metrics
+ok 30 - overflowed magnitude is rejected, not serialized as fake null metrics
+  ---
+  duration_ms: 0.074521
+  type: 'test'
+  ...
+# Subtest: importer warnings survive JSON and report roundtrip as inert text only
+ok 31 - importer warnings survive JSON and report roundtrip as inert text only
+  ---
+  duration_ms: 0.07738
+  type: 'test'
+  ...
+1..31
+# tests 31
 # suites 0
-# pass 24
+# pass 31
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 66.427624
+# duration_ms 147.847221

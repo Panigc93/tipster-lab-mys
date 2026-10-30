@@ -2,11 +2,12 @@
 (function () {
  'use strict';
  if(!/(^|\.)blogabet\.com$/.test(location.hostname))throw Error('Abre primero una página de estadísticas de Blogabet.');
- const clean=node=>{const clone=node.cloneNode(true);clone.querySelectorAll('.hidden,[aria-hidden="true"]').forEach(n=>n.remove());return clone.textContent.replace(/\s+/g,' ').trim();};
+ const clean=node=>{const clone=node.cloneNode(true);clone.querySelectorAll('.hidden,[hidden],[aria-hidden="true"],script,style,template').forEach(n=>n.remove());return clone.textContent.replace(/\s+/g,' ').trim();};
  const number=s=>{s=String(s).replace(/[%+\s\u00a0]/g,'').replace(/−/g,'-');if(/^[-]?\d{1,3}(,\d{3})+(\.\d+)?$/.test(s))s=s.replace(/,/g,'');else if(/^[-]?\d+,\d+$/.test(s))s=s.replace(',','.');return /^-?\d+(\.\d+)?$/.test(s)?Number(s):null;};
  const slug=location.hostname.endsWith('.blogabet.com')?location.hostname.split('.')[0]:'';
  if(!slug||slug==='www')throw Error('Abre el perfil individual de un tipster.');
- const scopes=[];const warnings=[];
+ const scopes=[];const warnings=[];const seen=new Set();
+ const decimals=text=>{let s=String(text).replace(/[%+\s\u00a0]/g,'');if(s.includes(',')&&!s.includes('.')&&!/^-?\d{1,3}(,\d{3})+$/.test(s))s=s.replace(',','.');return s.includes('.')?s.split('.').at(-1).length:0;};
  for(const section of ['categories','sports'])for(const type of ['free','alltime','paid','private']){
   const root=document.getElementById(`${type}-${section}-StatsTabContent`);if(!root)continue;
   const table=root.querySelector('table');if(!table)continue;
@@ -24,7 +25,8 @@
    const leaf=[...cells[0].querySelectorAll('a,span')].filter(n=>!n.children.length&&!n.classList.contains('hidden')&&clean(n));
    const named=leaf.map(n=>clean(n));if(named.length&&new Set(named).size===1)label=named[0];
    const scope=section==='sports'?`Deporte: ${label}`:sport&&!label.startsWith(sport)?`${sport} - ${label}`:label;
-   scopes.push({tipster:slug,scope,picks,yield:y,access,source:`Tabla cargada ${type}/${section}; yield mostrado y redondeado por Blogabet`,asOf:new Date().toISOString(),url:location.href.split('#')[0]});
+   const key=JSON.stringify([scope,access]);if(seen.has(key)){warnings.push(`Muestra duplicada omitida: ${scope}/${access}`);continue;}seen.add(key);
+   scopes.push({tipster:slug,scope,picks,yield:y,yieldIsRounded:true,yieldDecimals:decimals(clean(cells[yieldCol])),access,source:`Tabla cargada ${type}/${section}; yield mostrado y redondeado por Blogabet`,asOf:new Date().toISOString(),url:location.href.split('#')[0]});
   }
  }
  if(!scopes.length)throw Error('No se encontraron tablas cargadas compatibles. Abre Statistics y expande Sports o Categories antes de exportar.');

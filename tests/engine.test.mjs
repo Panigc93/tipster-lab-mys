@@ -27,3 +27,27 @@ test('MYS never borrows category or FREE sample',()=>{const p=norm(Array.from({l
 test('MYS JSON import and malformed access',()=>{assert.equal(parseInput('{"scopes":[{"tipster":"A","scope":"Liga","picks":100,"yield":11,"access":"free"}]}').scopes[0].verdict,'pass');assert.throws(()=>normalizeMYS([{tipster:'A',scope:'Liga',picks:100,yield:11,access:'public'}]));});
 test('category named General is not counted twice',()=>{const g=mysFromPicks(norm([row({category:'General',visibility:'free'})]));assert.equal(g.length,1);assert.equal(g[0].picks,1);});
 test('MYS rejects invalid provenance dates',()=>{assert.throws(()=>normalizeMYS([{tipster:'A',scope:'Liga',picks:100,yield:11,access:'free',asOf:'2026-02-30'}]));});
+
+test('rounded displayed yield touching11 stays pending, not source-certified',()=>{
+ const base={tipster:'Fixture',scope:'Liga',picks:100,access:'free',yieldIsRounded:true,yieldDecimals:2};
+ assert.equal(evaluateMYS({...base,yield:11}).verdict,'unknown');
+ assert.equal(evaluateMYS({...base,yield:11.01}).verdict,'pass');
+ assert.equal(evaluateMYS({...base,yield:10.99}).verdict,'fail');
+ assert.equal(evaluateMYS({...base,yield:12,yieldDecimals:null}).verdict,'unknown');
+ assert.equal(evaluateMYS({...base,yield:11,yieldIsRounded:false}).verdict,'pass');
+ const parsed=parseInput(JSON.stringify({scopes:[{...base,yield:11}]}));
+ assert.equal(parsed.scopes[0].verdict,'unknown');assert.equal(parsed.scopes[0].yieldIsRounded,true);
+});
+
+test('booleans and arrays are not numeric inputs; invalid visibility/time fails atomically',()=>{
+ for(const x of [{stake:true},{stake:[1]},{visibility:'public'},{date:'2026-01-01T24:00:00Z'}])assert.throws(()=>norm([row(x)]));
+ assert.throws(()=>normalizeMYS([{tipster:'A',scope:'Liga',picks:true,yield:11,access:'free'}]));
+});
+test('zero stress preserves supplied net profit and scenarios subtract modeled odds loss',()=>{
+ const p=norm([row({profit:.99})]);assert.equal(stress(p,0,0).profit,.99);assert.ok(Math.abs(stress(p,10,0).profit-.79)<1e-10);
+});
+test('overflowed magnitude is rejected, not serialized as fake null metrics',()=>{assert.throws(()=>summarize(norm([row({stake:1e308,result:'loss'}),row({id:'2',stake:1e308,result:'loss'})])));});
+test('importer warnings survive JSON and report roundtrip as inert text only',()=>{
+ const scopes=[{tipster:'A',scope:'Liga',picks:100,yield:11,access:'free'}];
+ const d=parseInput(JSON.stringify({scopes,warnings:['ALL no acredita FREE',null,12]}));assert.deepEqual(d.warnings,['ALL no acredita FREE']);
+});

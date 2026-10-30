@@ -1,7 +1,7 @@
 // Tipster Lab: pure, network-free analysis. All returns are historical descriptions.
-export const VERSION = '0.4.0';
+export const VERSION = '0.5.0';
 const sum = xs => xs.reduce((a,b)=>a+b,0);
-const num = x => x === null || x === undefined || String(x).trim()==='' ? NaN : Number(x);
+const num = x => (typeof x!=='number'&&typeof x!=='string')||String(x).trim()==='' ? NaN : Number(x);
 export function parseCSV(text) {
   const rows=[]; let row=[], cell='', quoted=false;
   text=text.replace(/^\uFEFF/,'');
@@ -26,11 +26,13 @@ export function parseInput(text) {
   if(!Array.isArray(rows)||!rows.length)throw Error('Se espera un array JSON, {picks: []}, {tipsters: []} o CSV');
   if(rows.length>50000)throw Error('Límite: 50.000 registros');
   if(rows.some(x=>!x||typeof x!=='object'||Array.isArray(x)))throw Error('Cada registro debe ser un objeto');
-  if(rows.some(x=>'scope'in x||'access'in x))return {mode:'mys',scopes:normalizeMYS(rows),total:rows.length};
-  return rows.some(x=>'stake'in x||'result'in x||'settledAt'in x)?normalizePicks(rows):normalizeRadar(rows);
+  const warnings=Array.isArray(raw.warnings)?raw.warnings.filter(x=>typeof x==='string').slice(0,1000):[];
+  const data=rows.some(x=>'scope'in x||'access'in x)?{mode:'mys',scopes:normalizeMYS(rows),total:rows.length}:rows.some(x=>'stake'in x||'result'in x||'settledAt'in x)?normalizePicks(rows):normalizeRadar(rows);
+  return {...data,warnings};
 }
 function validDate(s){
   if(typeof s!=='string'||!/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$/.test(s))return null;
+  if(s.includes('T')&&(Number(s.slice(11,13))>23||Number(s.slice(14,16))>59||Number(s.slice(17,19))>59))return null;
   const d=new Date(s); if(!Number.isFinite(+d))return null;
   // Check calendar day before Date can silently roll February 30 into March.
   const day=s.slice(0,10);const utc=new Date(day+'T00:00:00Z');
@@ -62,10 +64,12 @@ export function normalizePicks(rows){
   const profit=hasProfit?supplied:computed;
   if(profit < -stake-0.02){issues.push(`${at}: pérdida mayor que stake (formato no soportado)`);return;}
   if(result==='void'&&Math.abs(profit)>0.02){issues.push(`${at}: void con profit distinto de cero`);return;}
-  picks.push({id,tipster,settledAt,day:settledAt.slice(0,10),stake,odds:Number.isFinite(odds)?odds:null,result:result||null,profit,eventId:r.eventId?String(r.eventId).trim():null,category:String(r.category??'Sin categoría'),visibility:String(r.visibility??'unknown')});
+  const visibility=String(r.visibility??'unknown');if(!['free','paid','private','unknown'].includes(visibility)){issues.push(`${at}: visibility no reconocido`);return;}
+  picks.push({id,tipster,settledAt,day:settledAt.slice(0,10),stake,odds:Number.isFinite(odds)?odds:null,result:result||null,profit,eventId:r.eventId?String(r.eventId).trim():null,category:String(r.category??'Sin categoría'),visibility});
  });
  if(issues.length)throw Error(`${issues.length} registro(s) inválidos. Importación cancelada. ${issues.slice(0,6).join(' · ')}`);
  if(!picks.length)throw Error('No hay picks liquidados válidos');
+ summarize(picks); // Reject aggregate numeric overflow before UI state changes.
  picks.sort((a,b)=>a.settledAt.localeCompare(b.settledAt)||a.tipster.localeCompare(b.tipster)||a.id.localeCompare(b.id));
  return {mode:'picks',picks,pending,total:rows.length};
 }
@@ -82,6 +86,7 @@ export function normalizeRadar(rows){
 }
 export function summarize(picks){
  const turnover=sum(picks.map(p=>p.stake)),profit=sum(picks.map(p=>p.profit));
+ if(!Number.isFinite(turnover)||!Number.isFinite(profit))throw Error('Magnitudes fuera del rango numérico soportado');
  const daily=new Map();for(const p of picks)daily.set(p.day,(daily.get(p.day)||0)+p.profit);
  let equity=0,peak=0,maxDrawdown=0;const curve=[{x:0,label:'Inicio',value:0}];
  [...daily].sort(([a],[b])=>a.localeCompare(b)).forEach(([day,p],i)=>{equity+=p;peak=Math.max(peak,equity);maxDrawdown=Math.max(maxDrawdown,peak-equity);curve.push({x:i+1,label:day,value:equity});});
@@ -95,9 +100,11 @@ export function stress(picks,slippage=0,commission=0){
  if(picks.some(p=>!p.result))return null;
  return summarize(picks.map(p=>{
  let profit=p.profit;
- if(p.result==='win'||p.result==='half_win'){
+ if((p.result==='win'||p.result==='half_win')&&slippage>0){
   // Slippage is a relative reduction in the decimal odds, floored at 1.00.
-  profit=p.stake*(Math.max(1,p.odds*(1-slippage/100))-1)*(p.result==='half_win'?0.5:1);
+  const factor=p.result==='half_win'?0.5:1;
+  // Keep imported net-profit adjustments; subtract only the modeled odds loss.
+  profit=p.profit-p.stake*(p.odds-Math.max(1,p.odds*(1-slippage/100)))*factor;
  }
  if(profit>0)profit*=1-commission/100;
  return {...p,profit};
@@ -135,7 +142,11 @@ export function evaluateMYS(scope){
  const y=Number.isFinite(scope.yield)?scope.yield:null;
  const access=['free','paid','private','unknown'].includes(scope.access)?scope.access:'unknown';
  const m=sample===null?'unknown':sample>=100?'pass':'fail';
- const yy=y===null?'unknown':y>=11?'pass':'fail';
+ const rounded=scope.yieldIsRounded===true;
+ const decimals=Number.isInteger(scope.yieldDecimals)&&scope.yieldDecimals>=0&&scope.yieldDecimals<=8?scope.yieldDecimals:null;
+ const margin=rounded&&decimals!==null?0.5*10**(-decimals):null;
+ // A rounded display touching the threshold cannot establish the exact criterion.
+ const yy=y===null?'unknown':rounded&&(decimals===null||(y-(margin??0)<11&&y+(margin??0)>=11))?'unknown':y>=11?'pass':'fail';
  const s=access==='free'?'pass':access==='unknown'?'unknown':'fail';
  const states=[m,yy,s];const verdict=states.includes('fail')?'fail':states.includes('unknown')?'unknown':'pass';
  return {...scope,picks:sample,yield:y,access,m,y:yy,s,verdict};
@@ -160,6 +171,6 @@ export function normalizeMYS(rows){
   if(yieldPct!==null&&!Number.isFinite(yieldPct))throw Error(`Fila ${i+1}: yield no válido`);
   if(r.asOf&&!validDate(r.asOf))throw Error(`Fila ${i+1}: asOf debe ser fecha ISO`);
   if(r.access!==undefined&&!['free','paid','private','unknown'].includes(r.access))throw Error(`Fila ${i+1}: access no reconocido`);
-  return evaluateMYS({tipster,scope,picks,yield:yieldPct,access:r.access??'unknown',source:String(r.source??'Importación manual'),asOf:r.asOf?validDate(r.asOf):null,url:typeof r.url==='string'&&/^https:\/\/[^/]+\.blogabet\.com\//.test(r.url)?r.url:null});
+  return evaluateMYS({tipster,scope,picks,yield:yieldPct,access:r.access??'unknown',source:String(r.source??'Importación manual'),yieldIsRounded:r.yieldIsRounded===true,yieldDecimals:Number.isInteger(r.yieldDecimals)&&r.yieldDecimals>=0&&r.yieldDecimals<=8?r.yieldDecimals:null,asOf:r.asOf?validDate(r.asOf):null,url:typeof r.url==='string'&&/^https:\/\/[^/]+\.blogabet\.com\//.test(r.url)?r.url:null});
  });
 }

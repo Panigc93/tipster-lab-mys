@@ -96,3 +96,15 @@ Abre `web/index.html` desde tu disco en un navegador moderno. No necesita npm, s
 Para regenerarla tras editar el motor: `node web/build.mjs`. Este paso no instala paquetes ni descarga código. La versión autónoma y la hospedada usan el mismo motor puro. Las etiquetas dicen "según datos aportados": importar una fuente no la certifica.
 
 Prueba opcional de UI real: `node tests/browser.test.mjs` con Chrome instalado (`CHROME_BIN` permite elegir binario). Usa un perfil temporal, fixtures sintéticos y el archivo local; comprueba paginación30/60/65, búsqueda, descarga Blob completa aunque se filtre, reimportación, plantilla, auditoría, importación inválida, vacío al recargar y anchuras320/390/1280. Las capturas son evidencia local, no datos reales de Blogabet.
+
+### Precisión y criterio11 %
+
+El importador HTML y el exportador DOM marcan `yieldIsRounded: true` y `yieldDecimals` con la precisión visible. Si su intervalo de redondeo toca11 %, Y permanece pendiente en vez de aprobar una cifra ambigua. Ejemplo:11,00 % mostrado a2 decimales no demuestra que el valor exacto sea ≥11 %;11,01 % sí queda por encima bajo redondeo al más cercano. No convierte una fuente en certificada. Para un dato realmente exacto, `yieldIsRounded` puede ser false u omitirse; no lo omitas solo para forzar el filtro. Si no se conoce la precisión de un yield marcado redondeado, queda pendiente.
+
+Los informes CLI exponen `scopes` y se pueden reimportar sin perder fuente, fecha ni marcas de redondeo. Ejecuta todas las pruebas Node con `node --test tests/engine.test.mjs tests/cli.test.mjs`, Python con `python -m unittest discover -s tests -p 'test_*.py'` y UI con `node tests/browser.test.mjs` (Chrome instalado).
+
+### Version0.5: controles de integridad
+
+Los avisos del importador se muestran como texto y viajan en el informe. Los registros inválidos cancelan el import completo; no se transforman en cero ni reemplazan una sesión correcta. Se rechazan visibilidades no reconocidas, booleanos/arrays usados como números, horas24:00 y sumas que desbordan el rango numérico. La prueba de cuotas0 % conserva el profit neto importado, incluidas pequeñas diferencias admitidas respecto al resultado bruto. La caída de cuota resta la pérdida modelada al profit neto, sin inventar que una comisión desapareció.
+
+`sh tests/run.sh` ejecuta el motor, CLI y parser HTML. `MYS_BROWSER_TEST=1 sh tests/run.sh` añade Chrome real, DOM del exportador, precisión redondeada y texto adversarial. No requiere una cuenta ni hace llamadas Blogabet. No hay CI hospedada instalada todavía.

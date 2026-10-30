@@ -27,4 +27,8 @@ class Tests(unittest.TestCase):
  def test_no_network_or_script_execution(self):self.assertEqual(len(parse(table()+'<script>fetch("https://example.invalid")</script>')['scopes']),1)
  def test_source_url_guard(self):self.assertRaises(ValueError,parse,table(),source_url='http://attacker.invalid/')
  def test_timestamp_timezone(self):self.assertRaises(ValueError,parse_snapshot,table(),'a','2026-10-30T12:00:00')
+ def test_rounded_precision_preserved(self):
+  s=parse(table(yield_='11.00%'))['scopes'][0];self.assertTrue(s['yieldIsRounded']);self.assertEqual(s['yieldDecimals'],2)
+ def test_hidden_attribute_and_scripts_not_part_of_label(self):
+  s=parse(table(extra='<span hidden>bad text</span><script>not a league</script>'))['scopes'][0];self.assertEqual(s['scope'],'Football - Liga A')
 if __name__=='__main__':unittest.main()

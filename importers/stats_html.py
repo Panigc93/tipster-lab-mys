@@ -17,7 +17,7 @@ class Element:
                 out.extend(child.find(predicate))
         return out
     def text(self):
-        if 'hidden' in self.attrs.get('class','').split() or self.attrs.get('aria-hidden')=='true':return ''
+        if self.tag in {'script','style','template'} or 'hidden' in self.attrs or 'hidden' in self.attrs.get('class','').split() or self.attrs.get('aria-hidden')=='true':return ''
         return ' '.join(' '.join(c.text() if isinstance(c,Element) else c for c in self.children).split())
 
 class Parser(HTMLParser):
@@ -42,6 +42,11 @@ def number(value):
         d=Decimal(value)
         return float(d) if d.is_finite() else None
     except InvalidOperation:return None
+
+def display_decimals(value):
+    value=re.sub(r'[%+\s\u00a0]','',value).replace('−','-')
+    if ',' in value and '.' not in value and not re.fullmatch(r'-?\d{1,3}(,\d{3})+',value):value=value.replace(',','.')
+    return len(value.rsplit('.',1)[1]) if '.' in value else 0
 
 def parse_snapshot(html,tipster,as_of,source_url=None):
     if len(html)>20_000_000:raise ValueError('Snapshot HTML supera 20 MB')
@@ -81,7 +86,7 @@ def parse_snapshot(html,tipster,as_of,source_url=None):
                 if key in seen:
                     warnings.append(f'Muestra duplicada omitida: {scope}/{access}');continue
                 seen.add(key)
-                scopes.append({'tipster':tipster.strip(),'scope':scope,'picks':int(count),'yield':y,'access':access,'source':f"Snapshot HTML {root.attrs['id']}; yield mostrado redondeado",'asOf':as_of,'url':source_url})
+                scopes.append({'tipster':tipster.strip(),'scope':scope,'picks':int(count),'yield':y,'yieldIsRounded':True,'yieldDecimals':display_decimals(cells[yi].text()),'access':access,'source':f"Snapshot HTML {root.attrs['id']}; yield mostrado redondeado",'asOf':as_of,'url':source_url})
     if not scopes:raise ValueError('No hay tablas Statistics compatibles cargadas. No se fabrican muestras a partir del header.')
     if any(s['access']=='unknown' for s in scopes):warnings.append('ALL no demuestra gratuidad. Su acceso queda sin verificar; no se restan estadísticas redondeadas.')
     return {'format':'mys-scopes-v1','scopes':scopes,'warnings':warnings,'snapshot':True}
