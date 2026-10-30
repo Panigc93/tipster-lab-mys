@@ -51,3 +51,9 @@ test('importer warnings survive JSON and report roundtrip as inert text only',()
  const scopes=[{tipster:'A',scope:'Liga',picks:100,yield:11,access:'free'}];
  const d=parseInput(JSON.stringify({scopes,warnings:['ALL no acredita FREE',null,12]}));assert.deepEqual(d.warnings,['ALL no acredita FREE']);
 });
+import {safeSourceURL} from '../app/src/engine.mjs';
+test('source links require actual HTTPS Blogabet profile host; strip query and fragment',()=>{
+ assert.equal(safeSourceURL('https://fixture.blogabet.com/statistics?secret=do-not-export#free'),'https://fixture.blogabet.com/statistics');
+ for(const u of ['https://evil.invalid#fixture.blogabet.com/','https://fixture.blogabet.com.evil.invalid/','javascript:alert(1)','http://fixture.blogabet.com/','https://a:b@fixture.blogabet.com/','https://www.blogabet.com/','https://fixture.blogabet.com:444/'])assert.equal(safeSourceURL(u),null);
+ const s=normalizeMYS([{tipster:'fixture',scope:'Liga',picks:100,yield:11,url:'https://evil.invalid#fixture.blogabet.com/'}]);assert.equal(s[0].url,null);
+});

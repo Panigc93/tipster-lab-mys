@@ -26,7 +26,7 @@
    const named=leaf.map(n=>clean(n));if(named.length&&new Set(named).size===1)label=named[0];
    const scope=section==='sports'?`Deporte: ${label}`:sport&&!label.startsWith(sport)?`${sport} - ${label}`:label;
    const key=JSON.stringify([scope,access]);if(seen.has(key)){warnings.push(`Muestra duplicada omitida: ${scope}/${access}`);continue;}seen.add(key);
-   scopes.push({tipster:slug,scope,picks,yield:y,yieldIsRounded:true,yieldDecimals:decimals(clean(cells[yieldCol])),access,source:`Tabla cargada ${type}/${section}; yield mostrado y redondeado por Blogabet`,asOf:new Date().toISOString(),url:location.href.split('#')[0]});
+   scopes.push({tipster:slug,scope,picks,yield:y,yieldIsRounded:true,yieldDecimals:decimals(clean(cells[yieldCol])),access,source:`Tabla cargada ${type}/${section}; yield mostrado y redondeado por Blogabet`,asOf:new Date().toISOString(),url:location.origin+location.pathname});
   }
  }
  if(!scopes.length)throw Error('No se encontraron tablas cargadas compatibles. Abre Statistics y expande Sports o Categories antes de exportar.');

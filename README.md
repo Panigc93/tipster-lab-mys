@@ -1,6 +1,6 @@
 # Tipster Lab · MYS
 
-Versión 0.2, 30 octubre 2026. Herramienta de investigación, sin apuestas ni trading.
+Versión 0.5, 30 octubre 2026. Herramienta de investigación, sin apuestas ni trading.
 
 ## Método principal
 
@@ -39,7 +39,7 @@ Array de objetos con name/slug, picks, yield y opcionalmente yield3m, yield6m, y
 
 `collector/mys-export.js` y `mys-export-bookmarklet.txt` leen solo tablas Statistics que YA estén cargadas en el perfil del tipster. No hacen fetch, no leen cookies ni guardan datos. Abre Statistics y expande Categories o Sports. Instala el contenido de bookmarklet como URL de un marcador, ejecútalo e importa el JSON descargado.
 
-FREE explícito se etiqueta free. PAID/PRIVATE se excluyen. ALL permanece unknown: ausencia de tabla PAID no prueba gratuidad. El exportador no resta estadísticas redondeadas ni infiere acceso de una pestaña ausente. Usa los nombres de liga tal como los muestra la tabla. Compatibilidad con el DOM real pendiente de comprobación autenticada: hay pruebas de formato, pero no certificación en vivo.
+FREE explícito se etiqueta free. PAID/PRIVATE se excluyen. ALL permanece unknown: ausencia de tabla PAID no prueba gratuidad. El exportador no resta estadísticas redondeadas ni infiere acceso de una pestaña ausente. Usa los nombres de liga tal como los muestra la tabla. Compatibilidad con el DOM real pendiente de comprobación autenticada: las pruebas usan fixtures de DOM, no una certificación en vivo.
 
 ## Auditoría secundaria
 
@@ -73,7 +73,7 @@ Código existente inspeccionado: https://github.com/Panigc93/tipster-analyzer y 
 
 ## Pendiente real
 
-La lectura autenticada puntual devolvió HTTP 403. Se detuvo sin reintentos ni rutas alternativas. No hay resultados MYS reales validados ni promesa de que la cookie esté vigente. El dataset existente de 8.445 nombres/slugs no contiene picks ni yields, por lo que no se presenta como evidencia MYS.
+La primera lectura autenticada puntual devolvió HTTP 403, pero no replicaba la llamada AJAX del repo. Se detuvo. Hay un único diagnóstico equivalente autorizado para después del intervalo comunicado de una hora; no se hacen consultas repetidas ni se considera probado que la cookie esté inválida. No hay resultados MYS reales validados ni promesa de que la cookie esté vigente. El dataset existente de 8.445 nombres/slugs no contiene picks ni yields, por lo que no se presenta como evidencia MYS.
 
 ## Hito 0.3: snapshots HTML, sin conexión
 
@@ -87,7 +87,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 
 La fecha debe ser la de captura real, no se deduce de la fecha del archivo. FREE explícito conserva acceso free; ALL queda unknown; PAID/PRIVATE permanecen excluidos. Los números visibles pueden estar redondeados, especialmente alrededor del 11%: revisa la cifra exacta antes de una decisión. No se resta ALL-PAID con números redondeados ni se atribuye gratuidad por ausencia de pestañas. Tablas sin cargar, cabeceras no reconocidas y números ambiguos quedan advertidos o rechazados, nunca convertidos en ceros.
 
-La compatibilidad está probada con 15 casos sintéticos de estructura DOM, NO con un snapshot autenticado real de Blogabet. Categorías sin identificación estructural conservan el texto original; no se inventa una liga recortando nombres. La app 0.3 añade búsqueda y visualización progresiva de muestras para manejar importaciones grandes sin llenar el móvil con miles de tarjetas.
+La compatibilidad está probada con casos sintéticos de estructura DOM, NO con un snapshot autenticado real de Blogabet. Categorías sin identificación estructural conservan el texto original; no se inventa una liga recortando nombres. La app 0.3 añade búsqueda y visualización progresiva de muestras para manejar importaciones grandes sin llenar el móvil con miles de tarjetas.
 
 ## Versión autónoma 0.4, sin instalación
 
@@ -108,3 +108,17 @@ Los informes CLI exponen `scopes` y se pueden reimportar sin perder fuente, fech
 Los avisos del importador se muestran como texto y viajan en el informe. Los registros inválidos cancelan el import completo; no se transforman en cero ni reemplazan una sesión correcta. Se rechazan visibilidades no reconocidas, booleanos/arrays usados como números, horas24:00 y sumas que desbordan el rango numérico. La prueba de cuotas0 % conserva el profit neto importado, incluidas pequeñas diferencias admitidas respecto al resultado bruto. La caída de cuota resta la pérdida modelada al profit neto, sin inventar que una comisión desapareció.
 
 `sh tests/run.sh` ejecuta el motor, CLI y parser HTML. `MYS_BROWSER_TEST=1 sh tests/run.sh` añade Chrome real, DOM del exportador, precisión redondeada y texto adversarial. No requiere una cuenta ni hace llamadas Blogabet. No hay CI hospedada instalada todavía.
+
+## Lotes reproducibles de snapshots
+
+Para varios perfiles ya guardados, `importers/batch_snapshots.py` recibe un manifest explícito. No recorre carpetas indiscriminadamente ni busca credenciales. Solo admite archivos.html/.htm dentro de su carpeta, fechas de captura con zona, y un snapshot por tipster/muestra/acceso. Rechaza duplicados en vez de sumar dos veces la misma tabla. El informe conserva SHA256 y procedencia, no el HTML original. Un hash prueba qué archivo se procesó, no quién lo publicó ni si el acceso sigue vigente.
+
+```json
+{"snapshots":[{"file":"perfil.html","tipster":"nombre","asOf":"2026-10-30T12:00:00Z","url":"https://nombre.blogabet.com/"}]}
+```
+
+`sha256` opcional permite exigir el hash esperado. Ejecuta `python3 importers/batch_snapshots.py manifest.json --out lote-mys.json` y luego `node cli.mjs lote-mys.json --out informe.json`. No se escribe un resultado parcial si falla un snapshot. Usa una carpeta aislada con solo el manifest y snapshots deseados. No incluyas cookies ni HTML privado en un repo público.
+
+Las fuentes enlazadas se restringen a perfiles HTTPS de Blogabet. Se eliminan query strings y fragmentos para no incluir tokens accidentales en exportaciones. Un enlace dentro de un import no confirma autoría. Los importadores/CLI rechazan reemplazar una salida existente: usa un nombre nuevo para conservar evidencia. Nunca subas snapshots autenticados a GitHub.
+
+Las pruebas generativas deterministas contrastan200 historiales contra una implementación aritmética independiente de beneficio/stake/drawdown,100 historiales de escenarios y muestreos MYS por tipster/categoría/acceso. Verifican invariantes, no capacidad de predecir apuestas.

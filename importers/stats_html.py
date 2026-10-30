@@ -4,6 +4,7 @@ from html.parser import HTMLParser
 from decimal import Decimal, InvalidOperation
 from datetime import datetime
 import argparse,json,re,sys
+from urllib.parse import urlsplit,urlunsplit
 from pathlib import Path
 
 class Element:
@@ -56,6 +57,8 @@ def parse_snapshot(html,tipster,as_of,source_url=None):
         if not d.tzinfo:raise ValueError()
     except (ValueError,TypeError):raise ValueError('as-of requiere timestamp ISO con zona (fecha de captura, no fecha inferida)')
     if source_url and not re.fullmatch(r'https://[a-zA-Z0-9_-]+\.blogabet\.com(?:/[^\s]*)?',source_url):raise ValueError('URL fuente debe ser un perfil HTTPS Blogabet')
+    if source_url:
+        u=urlsplit(source_url);source_url=urlunsplit((u.scheme,u.netloc,u.path,'',''))
     p=Parser();p.feed(html);scopes=[];warnings=[];seen=set()
     roots=p.root.find(lambda e:bool(re.fullmatch(r'(alltime|free|paid|private)-(categories|sports)-StatsTabContent',e.attrs.get('id',''))))
     for root in roots:
@@ -94,6 +97,9 @@ def parse_snapshot(html,tipster,as_of,source_url=None):
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('html',type=Path);ap.add_argument('--tipster',required=True);ap.add_argument('--as-of',required=True);ap.add_argument('--source-url');ap.add_argument('--out',required=True,type=Path);args=ap.parse_args()
     try:
+        if args.html.stat().st_size>20_000_000:raise ValueError('Snapshot HTML supera20 MB')
+        if args.out.resolve()==args.html.resolve() or args.out.suffix.lower()!='.json':raise ValueError('Salida JSON debe ser distinta del HTML de entrada')
+        if args.out.exists():raise ValueError('La salida ya existe; elige otro nombre')
         data=parse_snapshot(args.html.read_text(encoding='utf-8'),args.tipster,args.as_of,args.source_url);args.out.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print(f"Exportadas {len(data['scopes'])} muestras; {len(data['warnings'])} advertencias.")
     except (ValueError,OSError) as e:print('Error: '+str(e),file=sys.stderr);return 1
     return 0

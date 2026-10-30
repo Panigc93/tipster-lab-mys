@@ -31,4 +31,6 @@ class Tests(unittest.TestCase):
   s=parse(table(yield_='11.00%'))['scopes'][0];self.assertTrue(s['yieldIsRounded']);self.assertEqual(s['yieldDecimals'],2)
  def test_hidden_attribute_and_scripts_not_part_of_label(self):
   s=parse(table(extra='<span hidden>bad text</span><script>not a league</script>'))['scopes'][0];self.assertEqual(s['scope'],'Football - Liga A')
+ def test_source_query_and_fragment_not_exported(self):
+  s=parse(table(),source_url='https://fixture.blogabet.com/statistics?token=not-a-secret-fixture#free')['scopes'][0];self.assertEqual(s['url'],'https://fixture.blogabet.com/statistics')
 if __name__=='__main__':unittest.main()
