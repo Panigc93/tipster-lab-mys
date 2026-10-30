@@ -1,5 +1,5 @@
 // Tipster Lab: pure, network-free analysis. All returns are historical descriptions.
-export const VERSION = '0.5.0';
+export const VERSION = '0.6.0';
 const sum = xs => xs.reduce((a,b)=>a+b,0);
 const num = x => (typeof x!=='number'&&typeof x!=='string')||String(x).trim()==='' ? NaN : Number(x);
 export function parseCSV(text) {

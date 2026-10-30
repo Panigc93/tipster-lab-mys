@@ -129,4 +129,4 @@ La app autónoma `web/index.html` permite importar el snapshot actual y después
 
 También funciona sin interfaz: `node compare.mjs anterior.json actual.json --out comparacion.json`. Requiere muestras MYS, sin duplicados por tipster/ámbito/acceso, y rechaza capturas actuales anteriores a las previas cuando ambas tienen fecha. Un cambio FREE→PRIVATE aparece como una retirada y un alta, sin mezclar muestras. Ausencia del archivo no significa desaparición real. Caída de picks no prueba un reset. Diferencia de yield son puntos porcentuales, no el yield del periodo entre capturas: sin stakes/profits exactos no se reconstruye rendimiento incremental.
 
-Esta función está en la app autónoma y CLI. La página hospedada conserva0.5, sin afirmar una función que aún no contiene.
+Esta función está en la app autónoma, CLI y página hospedada. La página hospedada incorpora la misma comparación tras su verificación y publicación0.6.

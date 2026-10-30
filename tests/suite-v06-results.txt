@@ -2,265 +2,265 @@ TAP version 13
 # Subtest: CLI report export is complete and reimportable with provenance and precision
 ok 1 - CLI report export is complete and reimportable with provenance and precision
   ---
-  duration_ms: 36.184018
+  duration_ms: 37.132231
   type: 'test'
   ...
 # Subtest: CLI invalid input fails without creating output
 ok 2 - CLI invalid input fails without creating output
   ---
-  duration_ms: 33.683571
+  duration_ms: 30.890554
   type: 'test'
   ...
 # Subtest: comparison preserves own samples, deltas and transitions
 ok 3 - comparison preserves own samples, deltas and transitions
   ---
-  duration_ms: 2.120023
+  duration_ms: 2.042938
   type: 'test'
   ...
 # Subtest: decreasing picks is flagged, cause not guessed
 ok 4 - decreasing picks is flagged, cause not guessed
   ---
-  duration_ms: 0.258392
+  duration_ms: 0.256445
   type: 'test'
   ...
 # Subtest: access change is removed/added, never merged or inferred as followability
 ok 5 - access change is removed/added, never merged or inferred as followability
   ---
-  duration_ms: 0.291116
+  duration_ms: 0.310595
   type: 'test'
   ...
 # Subtest: absent sample does not imply source disappeared
 ok 6 - absent sample does not imply source disappeared
   ---
-  duration_ms: 0.361853
+  duration_ms: 0.355607
   type: 'test'
   ...
 # Subtest: same snapshot is unchanged; missing precision/dates remain cautioned
 ok 7 - same snapshot is unchanged; missing precision/dates remain cautioned
   ---
-  duration_ms: 0.364412
+  duration_ms: 0.386097
   type: 'test'
   ...
 # Subtest: old current capture and duplicate identities rejected
 ok 8 - old current capture and duplicate identities rejected
   ---
-  duration_ms: 0.416763
+  duration_ms: 0.423406
   type: 'test'
   ...
 # Subtest: no cross category borrowing and null values remain null
 ok 9 - no cross category borrowing and null values remain null
   ---
-  duration_ms: 0.300927
+  duration_ms: 0.309927
   type: 'test'
   ...
 # Subtest: comparison CLI runs and will not overwrite input evidence
 ok 10 - comparison CLI runs and will not overwrite input evidence
   ---
-  duration_ms: 60.983556
+  duration_ms: 65.464279
   type: 'test'
   ...
 # Subtest: yield uses stake, not count
 ok 11 - yield uses stake, not count
   ---
-  duration_ms: 8.463881
+  duration_ms: 8.532663
   type: 'test'
   ...
 # Subtest: drawdown includes initial loss and partial recoveries
 ok 12 - drawdown includes initial loss and partial recoveries
   ---
-  duration_ms: 0.364062
+  duration_ms: 0.36148
   type: 'test'
   ...
 # Subtest: same-day settlement is batched, no invented intraday path
 ok 13 - same-day settlement is batched, no invented intraday path
   ---
-  duration_ms: 0.348695
+  duration_ms: 0.337686
   type: 'test'
   ...
 # Subtest: void, half win and half loss
 ok 14 - void, half win and half loss
   ---
-  duration_ms: 0.412069
+  duration_ms: 0.41131
   type: 'test'
   ...
 # Subtest: pending excluded
 ok 15 - pending excluded
   ---
-  duration_ms: 0.183904
+  duration_ms: 0.183771
   type: 'test'
   ...
 # Subtest: duplicate id is scoped to tipster
 ok 16 - duplicate id is scoped to tipster
   ---
-  duration_ms: 0.329188
+  duration_ms: 0.316814
   type: 'test'
   ...
 # Subtest: invalid records fail atomically
 ok 17 - invalid records fail atomically
   ---
-  duration_ms: 0.362175
+  duration_ms: 0.369853
   type: 'test'
   ...
 # Subtest: profit only is accepted, stress unavailable
 ok 18 - profit only is accepted, stress unavailable
   ---
-  duration_ms: 0.291655
+  duration_ms: 0.289121
   type: 'test'
   ...
 # Subtest: slippage and commission, losses unchanged
 ok 19 - slippage and commission, losses unchanged
   ---
-  duration_ms: 0.444519
+  duration_ms: 0.448115
   type: 'test'
   ...
 # Subtest: half win stress and zero scenario identity
 ok 20 - half win stress and zero scenario identity
   ---
-  duration_ms: 0.41607
+  duration_ms: 1.498181
   type: 'test'
   ...
 # Subtest: CSV quoted comma, newline, escaped quote, CRLF, BOM
 ok 21 - CSV quoted comma, newline, escaped quote, CRLF, BOM
   ---
-  duration_ms: 2.120766
+  duration_ms: 1.013898
   type: 'test'
   ...
 # Subtest: JSON envelopes and CSV entry
 ok 22 - JSON envelopes and CSV entry
   ---
-  duration_ms: 0.389432
+  duration_ms: 0.418552
   type: 'test'
   ...
 # Subtest: radar preserves missing versus zero and snake_case
 ok 23 - radar preserves missing versus zero and snake_case
   ---
-  duration_ms: 0.36142
+  duration_ms: 0.332069
   type: 'test'
   ...
 # Subtest: split holds whole UTC dates together
 ok 24 - split holds whole UTC dates together
   ---
-  duration_ms: 0.499279
+  duration_ms: 0.411464
   type: 'test'
   ...
 # Subtest: bootstrap is deterministic and constant return stays constant
 ok 25 - bootstrap is deterministic and constant return stays constant
   ---
-  duration_ms: 4.548572
+  duration_ms: 4.977391
   type: 'test'
   ...
 # Subtest: overlap is exact event id not correlation
 ok 26 - overlap is exact event id not correlation
   ---
-  duration_ms: 0.308571
+  duration_ms: 0.305456
   type: 'test'
   ...
 # Subtest: demo valid and three distinct streams
 ok 27 - demo valid and three distinct streams
   ---
-  duration_ms: 5.96237
+  duration_ms: 5.951296
   type: 'test'
   ...
 # Subtest: MYS inclusive thresholds exactly 100 and 11
 ok 28 - MYS inclusive thresholds exactly 100 and 11
   ---
-  duration_ms: 0.176916
+  duration_ms: 0.181937
   type: 'test'
   ...
 # Subtest: MYS independently fails sample yield paid private
 ok 29 - MYS independently fails sample yield paid private
   ---
-  duration_ms: 0.132891
+  duration_ms: 0.131904
   type: 'test'
   ...
 # Subtest: unknown access is not pass, missing yield is unknown
 ok 30 - unknown access is not pass, missing yield is unknown
   ---
-  duration_ms: 0.092922
+  duration_ms: 0.088965
   type: 'test'
   ...
 # Subtest: MYS never borrows category or FREE sample
 ok 31 - MYS never borrows category or FREE sample
   ---
-  duration_ms: 1.58893
+  duration_ms: 2.060405
   type: 'test'
   ...
 # Subtest: MYS JSON import and malformed access
 ok 32 - MYS JSON import and malformed access
   ---
-  duration_ms: 0.356922
+  duration_ms: 0.327139
   type: 'test'
   ...
 # Subtest: category named General is not counted twice
 ok 33 - category named General is not counted twice
   ---
-  duration_ms: 0.637534
+  duration_ms: 0.236871
   type: 'test'
   ...
 # Subtest: MYS rejects invalid provenance dates
 ok 34 - MYS rejects invalid provenance dates
   ---
-  duration_ms: 0.126087
+  duration_ms: 0.12375
   type: 'test'
   ...
 # Subtest: rounded displayed yield touching11 stays pending, not source-certified
 ok 35 - rounded displayed yield touching11 stays pending, not source-certified
   ---
-  duration_ms: 0.190257
+  duration_ms: 0.201651
   type: 'test'
   ...
 # Subtest: booleans and arrays are not numeric inputs; invalid visibility/time fails atomically
 ok 36 - booleans and arrays are not numeric inputs; invalid visibility/time fails atomically
   ---
-  duration_ms: 0.248087
+  duration_ms: 0.253079
   type: 'test'
   ...
 # Subtest: zero stress preserves supplied net profit and scenarios subtract modeled odds loss
 ok 37 - zero stress preserves supplied net profit and scenarios subtract modeled odds loss
   ---
-  duration_ms: 0.131219
+  duration_ms: 0.134752
   type: 'test'
   ...
 # Subtest: overflowed magnitude is rejected, not serialized as fake null metrics
 ok 38 - overflowed magnitude is rejected, not serialized as fake null metrics
   ---
-  duration_ms: 0.151494
+  duration_ms: 0.154584
   type: 'test'
   ...
 # Subtest: importer warnings survive JSON and report roundtrip as inert text only
 ok 39 - importer warnings survive JSON and report roundtrip as inert text only
   ---
-  duration_ms: 0.136861
+  duration_ms: 0.136952
   type: 'test'
   ...
 # Subtest: source links require actual HTTPS Blogabet profile host; strip query and fragment
 ok 40 - source links require actual HTTPS Blogabet profile host; strip query and fragment
   ---
-  duration_ms: 0.567656
+  duration_ms: 0.392691
   type: 'test'
   ...
 # Subtest: 200 generated histories agree with independent stake/profit/daily-drawdown oracle
 ok 41 - 200 generated histories agree with independent stake/profit/daily-drawdown oracle
   ---
-  duration_ms: 138.450856
+  duration_ms: 135.900339
   type: 'test'
   ...
 # Subtest: 100 generated histories preserve0% scenario, never improve with worse odds or higher commission
 ok 42 - 100 generated histories preserve0% scenario, never improve with worse odds or higher commission
   ---
-  duration_ms: 85.117823
+  duration_ms: 84.907824
   type: 'test'
   ...
 # Subtest: generated MYS scopes exactly match their own tipster/category/access sample, never ALL borrowing
 ok 43 - generated MYS scopes exactly match their own tipster/category/access sample, never ALL borrowing
   ---
-  duration_ms: 16.812972
+  duration_ms: 17.098103
   type: 'test'
   ...
 # Subtest: split/recombined data preserves totals, constant stake scaling preserves yield and scales drawdown
 ok 44 - split/recombined data preserves totals, constant stake scaling preserves yield and scales drawdown
   ---
-  duration_ms: 2.745536
+  duration_ms: 2.168538
   type: 'test'
   ...
 1..44
@@ -271,7 +271,7 @@ ok 44 - split/recombined data preserves totals, constant stake scaling preserves
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 670.389694
+# duration_ms 668.158124
 ..........................
 ----------------------------------------------------------------------
 Ran 26 tests in 0.011s
