@@ -2,145 +2,145 @@ TAP version 13
 # Subtest: yield uses stake, not count
 ok 1 - yield uses stake, not count
   ---
-  duration_ms: 5.453212
+  duration_ms: 12.497219
   type: 'test'
   ...
 # Subtest: drawdown includes initial loss and partial recoveries
 ok 2 - drawdown includes initial loss and partial recoveries
   ---
-  duration_ms: 0.20321
+  duration_ms: 0.248391
   type: 'test'
   ...
 # Subtest: same-day settlement is batched, no invented intraday path
 ok 3 - same-day settlement is batched, no invented intraday path
   ---
-  duration_ms: 0.09225
+  duration_ms: 0.10868
   type: 'test'
   ...
 # Subtest: void, half win and half loss
 ok 4 - void, half win and half loss
   ---
-  duration_ms: 0.203561
+  duration_ms: 0.298711
   type: 'test'
   ...
 # Subtest: pending excluded
 ok 5 - pending excluded
   ---
-  duration_ms: 0.10395
+  duration_ms: 0.12775
   type: 'test'
   ...
 # Subtest: duplicate id is scoped to tipster
 ok 6 - duplicate id is scoped to tipster
   ---
-  duration_ms: 0.171061
+  duration_ms: 0.202311
   type: 'test'
   ...
 # Subtest: invalid records fail atomically
 ok 7 - invalid records fail atomically
   ---
-  duration_ms: 0.1889
+  duration_ms: 0.24584
   type: 'test'
   ...
 # Subtest: profit only is accepted, stress unavailable
 ok 8 - profit only is accepted, stress unavailable
   ---
-  duration_ms: 0.185601
+  duration_ms: 0.229161
   type: 'test'
   ...
 # Subtest: slippage and commission, losses unchanged
 ok 9 - slippage and commission, losses unchanged
   ---
-  duration_ms: 0.30385
+  duration_ms: 0.326061
   type: 'test'
   ...
 # Subtest: half win stress and zero scenario identity
 ok 10 - half win stress and zero scenario identity
   ---
-  duration_ms: 0.339461
+  duration_ms: 0.314741
   type: 'test'
   ...
 # Subtest: CSV quoted comma, newline, escaped quote, CRLF, BOM
 ok 11 - CSV quoted comma, newline, escaped quote, CRLF, BOM
   ---
-  duration_ms: 0.598942
+  duration_ms: 0.715721
   type: 'test'
   ...
 # Subtest: JSON envelopes and CSV entry
 ok 12 - JSON envelopes and CSV entry
   ---
-  duration_ms: 0.31948
+  duration_ms: 0.306611
   type: 'test'
   ...
 # Subtest: radar preserves missing versus zero and snake_case
 ok 13 - radar preserves missing versus zero and snake_case
   ---
-  duration_ms: 0.2059
+  duration_ms: 0.247711
   type: 'test'
   ...
 # Subtest: split holds whole UTC dates together
 ok 14 - split holds whole UTC dates together
   ---
-  duration_ms: 0.972332
+  duration_ms: 0.272221
   type: 'test'
   ...
 # Subtest: bootstrap is deterministic and constant return stays constant
 ok 15 - bootstrap is deterministic and constant return stays constant
   ---
-  duration_ms: 3.221498
+  duration_ms: 3.963869
   type: 'test'
   ...
 # Subtest: overlap is exact event id not correlation
 ok 16 - overlap is exact event id not correlation
   ---
-  duration_ms: 0.19275
+  duration_ms: 0.629992
   type: 'test'
   ...
 # Subtest: demo valid and three distinct streams
 ok 17 - demo valid and three distinct streams
   ---
-  duration_ms: 2.946377
+  duration_ms: 3.573888
   type: 'test'
   ...
 # Subtest: MYS inclusive thresholds exactly 100 and 11
 ok 18 - MYS inclusive thresholds exactly 100 and 11
   ---
-  duration_ms: 0.09202
+  duration_ms: 0.11501
   type: 'test'
   ...
 # Subtest: MYS independently fails sample yield paid private
 ok 19 - MYS independently fails sample yield paid private
   ---
-  duration_ms: 0.068521
+  duration_ms: 0.0882
   type: 'test'
   ...
 # Subtest: unknown access is not pass, missing yield is unknown
 ok 20 - unknown access is not pass, missing yield is unknown
   ---
-  duration_ms: 0.0462
+  duration_ms: 0.050471
   type: 'test'
   ...
 # Subtest: MYS never borrows category or FREE sample
 ok 21 - MYS never borrows category or FREE sample
   ---
-  duration_ms: 0.714201
+  duration_ms: 0.948712
   type: 'test'
   ...
 # Subtest: MYS JSON import and malformed access
 ok 22 - MYS JSON import and malformed access
   ---
-  duration_ms: 0.162091
+  duration_ms: 0.213
   type: 'test'
   ...
 # Subtest: category named General is not counted twice
 ok 23 - category named General is not counted twice
   ---
-  duration_ms: 0.08587
+  duration_ms: 0.092561
   type: 'test'
   ...
 # Subtest: MYS rejects invalid provenance dates
 ok 24 - MYS rejects invalid provenance dates
   ---
-  duration_ms: 0.05438
+  duration_ms: 0.06474
   type: 'test'
   ...
 1..24
@@ -151,4 +151,4 @@ ok 24 - MYS rejects invalid provenance dates
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 69.544951
+# duration_ms 85.627468

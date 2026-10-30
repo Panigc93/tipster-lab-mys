@@ -1,6 +1,6 @@
 # Tipster Lab · MYS
 
-Versión 0.2, 30 octubre 2026. Herramienta privada de investigación, sin apuestas ni trading.
+Versión 0.2, 30 octubre 2026. Herramienta de investigación, sin apuestas ni trading.
 
 ## Método principal
 
@@ -13,7 +13,7 @@ Un filtro histórico no demuestra ventaja futura. No se mezclan picks generales 
 
 ## Uso
 
-Abre la app privada entregada en la conversación. Empieza vacía, nunca con resultados ficticios presentados como reales. Importa JSON/CSV o pega los registros. La demo es opcional. Los registros permanecen solo en memoria de esa sesión; no se suben ni se guardan al recargar. Exportar descarga un archivo en tu dispositivo.
+Abre la app entregada en la conversación. Empieza vacía, nunca con resultados ficticios presentados como reales. Importa JSON/CSV o pega los registros. La demo es opcional. Los registros permanecen solo en memoria de esa sesión; no se suben ni se guardan al recargar. Exportar descarga un archivo en tu dispositivo.
 
 ### Formato MYS
 
@@ -65,7 +65,7 @@ node cli.mjs archivo.json
 node cli.mjs archivo.csv --out informe.json
 ```
 
-No se incluye ninguna cookie, token, .env ni conexión de producción. No se modificó ningún repo existente.
+No se incluye ninguna cookie, token, .env ni conexión de producción. No se modificó ningún repo existente. Se creó el repo público tipster-lab-mys, pero el push fue denegado con HTTP 403 y sigue vacío. El ZIP contiene el código completo.
 
 ## Origen del diseño
 
