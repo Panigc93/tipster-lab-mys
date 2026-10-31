@@ -78,8 +78,8 @@ export function normalizeRadar(rows){
  const name=String(r.name??r.slug??'').trim(); const picks=num(r.picks);
  if(!name||!Number.isInteger(picks)||picks<0)throw Error(`Fila ${i+1}: name/slug y picks entero >= 0 obligatorios`);
  const get=(...keys)=>{const k=keys.find(k=>r[k]!==undefined);if(!k||r[k]===null||r[k]==='')return null;const n=num(r[k]);if(!Number.isFinite(n))throw Error(`Fila ${i+1}: ${k} no válido`);return n;};
- const date=(...keys)=>{const k=keys.find(k=>r[k]);if(!k)return null;const d=validDate(r[k]);if(!d)throw Error(`Fila ${i+1}: ${k} debe ser fecha ISO`);return d;};
- return {name,slug:String(r.slug??name),picks,yield:get('yield'),yield3m:get('yield3m','yield_3m'),yield6m:get('yield6m','yield_6m'),yield12m:get('yield12m','yield_12m'),resetCount:get('resetCount','reset_count'),updatedAt:date('statsUpdatedAt','stats_updated_at','updatedAt','updated_at')};
+ const date=(...keys)=>{const k=keys.find(k=>r[k]);if(!k)return null;const pg=String(r[k]).trim().replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}(?:\.\d+)?)([+-]\d{2})$/,(_,a,b,c)=>`${a}T${b}${c}:00`); const d=validDate(pg);if(!d)throw Error(`Fila ${i+1}: ${k} debe ser fecha ISO`);return d;};
+ return {name,slug:String(r.slug??name),picks,yield:get('yield'),yield3m:get('yield3m','yield_3m'),yield6m:get('yield6m','yield_6m'),yield12m:get('yield12m','yield_12m'),resetCount:get('resetCount','reset_count'),updatedAt:date('statsUpdatedAt','stats_updated_at','updatedAt','updated_at'),lastPickAt:date('lastPickAt','last_pick_at'),picks6mAvg:get('picks6mAvg','picks_6m_avg'),verifiedPct:get('verifiedPct','verified_pct')};
  });
  if(new Set(tipsters.map(t=>t.slug)).size!==tipsters.length)throw Error('Slugs duplicados en radar');
  return {mode:'radar',tipsters,total:rows.length};
